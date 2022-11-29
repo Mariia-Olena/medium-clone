@@ -2,14 +2,16 @@ import { NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
 import { StoreModule } from '@ngrx/store'
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
+import { EffectsModule } from '@ngrx/effects'
 
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
 import { AuthModule } from './auth/auth.module'
 import { environment } from '../environments/environment'
-import { HttpClientModule } from '@angular/common/http'
-import { EffectsModule } from '@ngrx/effects'
-import { BackendErrorMessagesComponent } from './shared/components/backend-error-messages/backend-error-messages.component'
+import { TopBarModule } from './shared/modules/top-bar/top-bar.module'
+import { PersistenceService } from './shared/services/persistence.service'
+import { AuthInterceptorService } from './shared/services/auth-interceptor.service'
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,6 +20,7 @@ import { BackendErrorMessagesComponent } from './shared/components/backend-error
     AppRoutingModule,
     AuthModule,
     HttpClientModule,
+    TopBarModule,
     EffectsModule.forRoot([]),
     StoreModule.forRoot({}),
     StoreDevtoolsModule.instrument({
@@ -26,7 +29,14 @@ import { BackendErrorMessagesComponent } from './shared/components/backend-error
       autoPause: true,
     }),
   ],
-  providers: [],
+  providers: [
+    PersistenceService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
