@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { RegisterRequestInterface } from 'src/app/auth/types/register-request.interface';
 import { CurrentUserInterface } from 'src/app/shared/types/current-user.interface';
 import { AuthResponseInterface } from 'src/app/auth/types/auth-response.interface';
+import { LoginRequestInterface } from 'src/app/auth/types/login-request.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -13,13 +14,28 @@ import { AuthResponseInterface } from 'src/app/auth/types/auth-response.interfac
 export class AuthService {
   constructor(private http: HttpClient) {}
 
+  getUser(response: AuthResponseInterface): CurrentUserInterface {
+    return response.user;
+  }
+
   register(data: RegisterRequestInterface): Observable<CurrentUserInterface> {
     const url = environment.apiUrl + '/users';
 
-    return this.http.post<AuthResponseInterface>(url, data).pipe(
-      map((response: AuthResponseInterface) => {
-        return response.user;
-      })
-    );
+    return this.http
+      .post<AuthResponseInterface>(url, data)
+      .pipe(map(this.getUser));
+  }
+
+  login(data: LoginRequestInterface): Observable<CurrentUserInterface> {
+    const url = environment.apiUrl + '/users/login';
+
+    return this.http
+      .post<AuthResponseInterface>(url, data)
+      .pipe(map(this.getUser));
+  }
+
+  gwtCurrentUser(): Observable<CurrentUserInterface> {
+    const url = environment.apiUrl + '/user';
+    return this.http.get(url).pipe(map(this.getUser));
   }
 }
