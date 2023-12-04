@@ -4,13 +4,9 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { loginAction } from 'src/app/auth/store/actions/login.action';
-import {
-  isSubmittingSelector,
-  validationErrorsSelector,
-} from 'src/app/auth/store/selectors';
+import { isSubmittingSelector, validationErrorsSelector } from 'src/app/auth/store/selectors';
 import { LoginRequestInterface } from 'src/app/auth/types/login-request.interface';
 import { BackendErrorsInterface } from 'src/app/shared/types/backend-errors.interface';
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',

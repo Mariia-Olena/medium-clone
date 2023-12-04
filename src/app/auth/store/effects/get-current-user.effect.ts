@@ -21,7 +21,7 @@ export class GetCurrentUserEffect {
         if (!token) {
           return of(getCurrentUserFailureAction());
         }
-        return this.authService.gwtCurrentUser().pipe(
+        return this.authService.getCurrentUser().pipe(
           map((currentUser: CurrentUserInterface) => {
             return getCurrentUserSuccessAction({ currentUser });
           }),

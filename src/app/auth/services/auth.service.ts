@@ -34,7 +34,7 @@ export class AuthService {
       .pipe(map(this.getUser));
   }
 
-  gwtCurrentUser(): Observable<CurrentUserInterface> {
+  getCurrentUser(): Observable<CurrentUserInterface> {
     const url = environment.apiUrl + '/user';
     return this.http.get(url).pipe(map(this.getUser));
   }
